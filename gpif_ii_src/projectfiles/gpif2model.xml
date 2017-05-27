@@ -31,193 +31,138 @@
       <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
       <RepeatCount>0</RepeatCount>
     </State>
-    <State ElementId="STATE6" StateType="NormalState">
-      <DisplayName>T0_FIRST_DONE</DisplayName>
-      <RepeatUntillNextTransition>False</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
-      <Action ElementId="IN_DATA0" ActionType="IN_DATA">
-        <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread1</ThreadNumber>
-        <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
-      </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
-    </State>
-    <State ElementId="STATE2" StateType="NormalState">
-      <DisplayName>T0_READ</DisplayName>
-      <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
-      <Action ElementId="IN_DATA0" ActionType="IN_DATA">
-        <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread0</ThreadNumber>
-        <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
-      </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
-    </State>
+    <Transition ElementId="TRANSITION6" SourceState="STATE5" DestinationState="STATE9" Equation="!DMA_RDY_TH0" />
     <State ElementId="STATE1" StateType="NormalState">
-      <DisplayName>PRE_START</DisplayName>
+      <DisplayName>WARM_UP</DisplayName>
+      <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
+      <RepeatCount>254</RepeatCount>
+    </State>
+    <State ElementId="STATE9" StateType="NormalState">
+      <DisplayName>T0_DMA_BUSY</DisplayName>
       <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
       <RepeatCount>0</RepeatCount>
-      <Action ElementId="LD_DATA_COUNT0" ActionType="LD_DATA_COUNT">
+      <Action ElementId="INTR_CPU0" ActionType="INTR_CPU" />
+      <Action ElementId="LD_CTRL_COUNT0" ActionType="LD_CTRL_COUNT">
         <CounterType>Up</CounterType>
         <CounterLoadValue>0</CounterLoadValue>
-        <CounterLimit>51200</CounterLimit>
-        <CounterReloadEnable>Enable</CounterReloadEnable>
+        <CounterLimit>32764</CounterLimit>
+        <CounterReloadEnable>Disable</CounterReloadEnable>
         <CounterIncrement>1</CounterIncrement>
         <CounterInterrupt>Mask</CounterInterrupt>
       </Action>
     </State>
-    <State ElementId="STATE9" StateType="NormalState">
-      <DisplayName>T0_DMA_BUSY</DisplayName>
-      <RepeatUntillNextTransition>False</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
-      <Action ElementId="INTR_CPU0" ActionType="INTR_CPU" />
-    </State>
-    <State ElementId="STATE0" StateType="NormalState">
-      <DisplayName>T1_READ</DisplayName>
+    <Transition ElementId="TRANSITION3" SourceState="STATE6" DestinationState="STATE8" Equation="DATA_CNT_HIT" />
+    <State ElementId="STATE8" StateType="NormalState">
+      <DisplayName>T1_RD_LD</DisplayName>
       <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
+      <RepeatCount>0</RepeatCount>
       <Action ElementId="IN_DATA0" ActionType="IN_DATA">
         <DataSourceSink>Socket</DataSourceSink>
         <ThreadNumber>Thread1</ThreadNumber>
         <SampleData>True</SampleData>
         <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
       </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
+      <Action ElementId="LD_DATA_COUNT0" ActionType="LD_DATA_COUNT">
+        <CounterType>Up</CounterType>
+        <CounterLoadValue>0</CounterLoadValue>
+        <CounterLimit>51198</CounterLimit>
+        <CounterReloadEnable>Disable</CounterReloadEnable>
+        <CounterIncrement>1</CounterIncrement>
+        <CounterInterrupt>Mask</CounterInterrupt>
+      </Action>
     </State>
-    <State ElementId="STATE3" StateType="NormalState">
-      <DisplayName>T0_DONE</DisplayName>
-      <RepeatUntillNextTransition>False</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
+    <State ElementId="STATE6" StateType="NormalState">
+      <DisplayName>T0_RD</DisplayName>
+      <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
+      <RepeatCount>0</RepeatCount>
       <Action ElementId="IN_DATA0" ActionType="IN_DATA">
         <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread1</ThreadNumber>
+        <ThreadNumber>Thread0</ThreadNumber>
         <SampleData>True</SampleData>
         <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
       </Action>
       <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
     </State>
     <State ElementId="STATE5" StateType="NormalState">
-      <DisplayName>T0_FIRST_RD</DisplayName>
+      <DisplayName>T0_RD_LD</DisplayName>
       <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
+      <RepeatCount>0</RepeatCount>
+      <Action ElementId="LD_DATA_COUNT0" ActionType="LD_DATA_COUNT">
+        <CounterType>Up</CounterType>
+        <CounterLoadValue>0</CounterLoadValue>
+        <CounterLimit>51198</CounterLimit>
+        <CounterReloadEnable>Disable</CounterReloadEnable>
+        <CounterIncrement>1</CounterIncrement>
+        <CounterInterrupt>Mask</CounterInterrupt>
+      </Action>
       <Action ElementId="IN_DATA0" ActionType="IN_DATA">
         <DataSourceSink>Socket</DataSourceSink>
         <ThreadNumber>Thread0</ThreadNumber>
         <SampleData>True</SampleData>
         <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
       </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
     </State>
-    <State ElementId="STATE4" StateType="NormalState">
-      <DisplayName>T1_DONE</DisplayName>
-      <RepeatUntillNextTransition>False</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
-      <Action ElementId="IN_DATA0" ActionType="IN_DATA">
-        <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread0</ThreadNumber>
-        <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
-      </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
-    </State>
-    <Transition ElementId="TRANSITION4" SourceState="STATE3" DestinationState="STATE12" Equation="!DMA_RDY_TH1" />
-    <State ElementId="STATE7" StateType="NormalState">
-      <DisplayName>T1_FIRST_RD</DisplayName>
-      <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
-      <Action ElementId="IN_DATA0" ActionType="IN_DATA">
-        <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread1</ThreadNumber>
-        <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
-      </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
-    </State>
-    <State ElementId="STATE8" StateType="NormalState">
-      <DisplayName>T1_FIRST_DONE</DisplayName>
-      <RepeatUntillNextTransition>False</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
-      <Action ElementId="IN_DATA0" ActionType="IN_DATA">
-        <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread0</ThreadNumber>
-        <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
-      </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
-    </State>
-    <Transition ElementId="TRANSITION1" SourceState="STATE8" DestinationState="STATE9" Equation="!DMA_RDY_TH0" />
-    <State ElementId="STATE12" StateType="NormalState">
-      <DisplayName>T1_DMA_BUSY</DisplayName>
-      <RepeatUntillNextTransition>False</RepeatUntillNextTransition>
-      <RepeatCount>1</RepeatCount>
-      <Action ElementId="INTR_CPU0" ActionType="INTR_CPU" />
-    </State>
-    <Transition ElementId="TRANSITION10" SourceState="STATE6" DestinationState="STATE7" Equation="LOGIC_ONE" />
-    <Transition ElementId="TRANSITION5" SourceState="STATE0" DestinationState="STATE4" Equation="DATA_CNT_HIT" />
-    <Transition ElementId="TRANSITION7" SourceState="STATE5" DestinationState="STATE6" Equation="DATA_CNT_HIT" />
-    <Transition ElementId="TRANSITION15" SourceState="STATE10" DestinationState="STATE11" Equation="DATA_CNT_HIT" />
-    <Transition ElementId="TRANSITION11" SourceState="STATE1" DestinationState="STATE5" Equation="FW_TRG" />
-    <Transition ElementId="TRANSITION3" SourceState="STATE2" DestinationState="STATE3" Equation="DATA_CNT_HIT" />
-    <Transition ElementId="TRANSITION0" SourceState="STARTSTATE1" DestinationState="STATE1" Equation="LOGIC_ONE" />
-    <Transition ElementId="TRANSITION8" SourceState="STATE7" DestinationState="STATE8" Equation="DATA_CNT_HIT" />
+    <Transition ElementId="TRANSITION11" SourceState="STATE12" DestinationState="STATE9" Equation="!DMA_RDY_TH0" />
     <State ElementId="STATE11" StateType="NormalState">
+      <DisplayName>T0_SKIP</DisplayName>
+      <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
+      <RepeatCount>0</RepeatCount>
+      <Action ElementId="COUNT_CTRL0" ActionType="COUNT_CTRL" />
+    </State>
+    <Transition ElementId="TRANSITION16" SourceState="STATE9" DestinationState="STATE11" Equation="LOGIC_ONE" />
+    <Transition ElementId="TRANSITION10" SourceState="STATE12" DestinationState="STATE5" Equation="DMA_RDY_TH0" />
+    <State ElementId="STATE12" StateType="NormalState">
       <DisplayName>T0_CHECK_DMA</DisplayName>
       <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
       <RepeatCount>0</RepeatCount>
-      <Action ElementId="IN_DATA0" ActionType="IN_DATA">
-        <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread0</ThreadNumber>
-        <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>False</WriteDataIntoDataSink>
-      </Action>
     </State>
-    <Transition ElementId="TRANSITION14" SourceState="STATE9" DestinationState="STATE10" Equation="LOGIC_ONE" />
-    <State ElementId="STATE10" StateType="NormalState">
-      <DisplayName>T0_SKIP_BUF</DisplayName>
+    <Transition ElementId="TRANSITION2" SourceState="STATE5" DestinationState="STATE6" Equation="DMA_RDY_TH0" />
+    <Transition ElementId="TRANSITION1" SourceState="STATE1" DestinationState="STATE5" Equation="FW_TRG" />
+    <Transition ElementId="TRANSITION19" SourceState="STATE13" DestinationState="STATE8" Equation="DMA_RDY_TH1" />
+    <Transition ElementId="TRANSITION20" SourceState="STATE13" DestinationState="STATE16" Equation="!DMA_RDY_TH1" />
+    <State ElementId="STATE16" StateType="NormalState">
+      <DisplayName>T1_DMA_BUSY</DisplayName>
       <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
       <RepeatCount>0</RepeatCount>
-      <Action ElementId="IN_DATA0" ActionType="IN_DATA">
-        <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread0</ThreadNumber>
-        <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>False</WriteDataIntoDataSink>
+      <Action ElementId="INTR_CPU0" ActionType="INTR_CPU" />
+      <Action ElementId="LD_CTRL_COUNT0" ActionType="LD_CTRL_COUNT">
+        <CounterType>Up</CounterType>
+        <CounterLoadValue>0</CounterLoadValue>
+        <CounterLimit>32764</CounterLimit>
+        <CounterReloadEnable>Disable</CounterReloadEnable>
+        <CounterIncrement>1</CounterIncrement>
+        <CounterInterrupt>Mask</CounterInterrupt>
       </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
     </State>
-    <Transition ElementId="TRANSITION2" SourceState="STATE8" DestinationState="STATE2" Equation="DMA_RDY_TH0" />
-    <Transition ElementId="TRANSITION6" SourceState="STATE3" DestinationState="STATE0" Equation="DMA_RDY_TH1" />
-    <Transition ElementId="TRANSITION9" SourceState="STATE4" DestinationState="STATE2" Equation="DMA_RDY_TH0" />
-    <Transition ElementId="TRANSITION18" SourceState="STATE12" DestinationState="STATE13" Equation="LOGIC_ONE" />
-    <Transition ElementId="TRANSITION12" SourceState="STATE4" DestinationState="STATE9" Equation="!DMA_RDY_TH0" />
-    <Transition ElementId="TRANSITION16" SourceState="STATE11" DestinationState="STATE2" Equation="DMA_RDY_TH0" />
-    <Transition ElementId="TRANSITION17" SourceState="STATE11" DestinationState="STATE9" Equation="!DMA_RDY_TH0" />
+    <Transition ElementId="TRANSITION0" SourceState="STARTSTATE1" DestinationState="STATE1" Equation="LOGIC_ONE" />
+    <Transition ElementId="TRANSITION4" SourceState="STATE8" DestinationState="STATE7" Equation="DMA_RDY_TH1" />
+    <Transition ElementId="TRANSITION18" SourceState="STATE14" DestinationState="STATE13" Equation="CTRL_CNT_HIT" />
     <State ElementId="STATE13" StateType="NormalState">
-      <DisplayName>T1_SKIP_BUF</DisplayName>
-      <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
-      <RepeatCount>0</RepeatCount>
-      <Action ElementId="IN_DATA0" ActionType="IN_DATA">
-        <DataSourceSink>Socket</DataSourceSink>
-        <ThreadNumber>Thread1</ThreadNumber>
-        <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>False</WriteDataIntoDataSink>
-      </Action>
-      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
-    </State>
-    <State ElementId="STATE14" StateType="NormalState">
       <DisplayName>T1_CHECK_DMA</DisplayName>
       <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
       <RepeatCount>0</RepeatCount>
+    </State>
+    <State ElementId="STATE7" StateType="NormalState">
+      <DisplayName>T1_RD</DisplayName>
+      <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
+      <RepeatCount>0</RepeatCount>
       <Action ElementId="IN_DATA0" ActionType="IN_DATA">
         <DataSourceSink>Socket</DataSourceSink>
         <ThreadNumber>Thread1</ThreadNumber>
         <SampleData>True</SampleData>
-        <WriteDataIntoDataSink>False</WriteDataIntoDataSink>
+        <WriteDataIntoDataSink>True</WriteDataIntoDataSink>
       </Action>
+      <Action ElementId="COUNT_DATA0" ActionType="COUNT_DATA" />
     </State>
-    <Transition ElementId="TRANSITION19" SourceState="STATE13" DestinationState="STATE14" Equation="DATA_CNT_HIT" />
-    <Transition ElementId="TRANSITION20" SourceState="STATE14" DestinationState="STATE0" Equation="DMA_RDY_TH1" />
-    <Transition ElementId="TRANSITION21" SourceState="STATE14" DestinationState="STATE12" Equation="!DMA_RDY_TH1" />
+    <Transition ElementId="TRANSITION12" SourceState="STATE8" DestinationState="STATE16" Equation="!DMA_RDY_TH1" />
+    <Transition ElementId="TRANSITION9" SourceState="STATE11" DestinationState="STATE12" Equation="CTRL_CNT_HIT" />
+    <State ElementId="STATE14" StateType="NormalState">
+      <DisplayName>T1_SKIP</DisplayName>
+      <RepeatUntillNextTransition>True</RepeatUntillNextTransition>
+      <RepeatCount>0</RepeatCount>
+      <Action ElementId="COUNT_CTRL0" ActionType="COUNT_CTRL" />
+    </State>
+    <Transition ElementId="TRANSITION5" SourceState="STATE7" DestinationState="STATE5" Equation="DATA_CNT_HIT" />
+    <Transition ElementId="TRANSITION17" SourceState="STATE16" DestinationState="STATE14" Equation="LOGIC_ONE" />
   </StateMachine>
 </GPIFIIModel>

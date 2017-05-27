@@ -13,7 +13,7 @@
 #include "gpif2_config.h"
 #include "host_commands.h"
 
-#define PROJECT_VERSION ( 0x180517C1 )
+#define PROJECT_VERSION ( 0xA0000008 )
 
 
 #define EVT_GPIF_INTR_T0   ( 1 << 1 )
@@ -25,10 +25,16 @@
 
 
 #define SD_SECTOR ( 512 )
+#define SD_ONE_MB_SECTORS ( 2048 )
 
 #define DMA_BUF_SIZE ( 50 * 1024 )
 #define DMA_BUF_CNT  ( 2 )
-#define SD_INTR_SECTORS ( 16 * 2048 )
+
+#define DMA_SKIP_SIZE ( 32768 )
+
+#define SD_WRITE_SIZE_SECTORS  ( 8 * SD_ONE_MB_SECTORS )
+#define SD_COMMIT_SIZE_SECTORS ( 8 * SD_ONE_MB_SECTORS )
+
 
 uint8_t glEp0Buffer[4*32];
 uint16_t glRecvdLen;
@@ -117,7 +123,7 @@ HandleUsbRequest (
 		Ep0Buffer[1] = state.intr_count[0];
 		Ep0Buffer[2] = state.sds[0].starts;
 		Ep0Buffer[3] = state.sds[0].completes;
-		Ep0Buffer[4] = DMA_BUF_SIZE;
+		Ep0Buffer[4] = DMA_SKIP_SIZE;
 		Ep0Buffer[5] = state.intr_count[1];
 		Ep0Buffer[6] = state.sds[1].starts;
 		Ep0Buffer[7] = state.sds[1].completes;
@@ -126,7 +132,7 @@ HandleUsbRequest (
 		Ep0Buffer[ 9] = state.last_error;
 
 		Ep0Buffer[10] = SD_SECTOR;
-		Ep0Buffer[11] = SD_INTR_SECTORS;
+		Ep0Buffer[11] = SD_WRITE_SIZE_SECTORS;
 		Ep0Buffer[12] = state.intr_count[0];
 		Ep0Buffer[13] = state.sds[0].sector;
 		Ep0Buffer[14] = state.sds[0].max_sector;
@@ -181,7 +187,7 @@ void StartNextSdTx( SdCardState_t* sds ) {
 			CyFalse,
 			sds->port,
 			0, /* unit */
-			SD_INTR_SECTORS,
+			SD_WRITE_SIZE_SECTORS,
 			sds->sector,
 			sds->socket );
 
@@ -192,7 +198,7 @@ void StartNextSdTx( SdCardState_t* sds ) {
 		state.last_error = apiRetStatus | 0x200;
 	} else {
 		sds->starts += 1;
-		sds->sector += SD_INTR_SECTORS;
+		sds->sector += SD_WRITE_SIZE_SECTORS;
 		if ( sds->sector >= sds->max_sector ) {
 			state.can_write = CyFalse;
 		}
@@ -484,13 +490,13 @@ InitSib()
     	HandleError(apiRetStatus);
     }
 
-    /* Set write commit size for both devices to 8 MB. */
-    apiRetStatus = CyU3PSibSetWriteCommitSize (0, 16384);
+    /* Set write commit size for both devices to 4 MB. */
+    apiRetStatus = CyU3PSibSetWriteCommitSize (0, SD_COMMIT_SIZE_SECTORS );
     if (apiRetStatus != CY_U3P_SUCCESS) {
     	HandleError(apiRetStatus);
     }
 
-    apiRetStatus = CyU3PSibSetWriteCommitSize (1, 16384);
+    apiRetStatus = CyU3PSibSetWriteCommitSize (1, SD_COMMIT_SIZE_SECTORS );
     if (apiRetStatus != CY_U3P_SUCCESS) {
     	HandleError(apiRetStatus);
     }
